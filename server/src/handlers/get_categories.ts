@@ -1,8 +1,18 @@
+import { db } from '../db';
+import { categoriesTable } from '../db/schema';
 import { type Category } from '../schema';
 
-export async function getCategories(): Promise<Category[]> {
-    // This is a placeholder declaration! Real code should be implemented here.
-    // The goal of this handler is fetching all categories from the database.
-    // This allows users to see all available categories for transaction categorization.
-    return Promise.resolve([]);
-}
+export const getCategories = async (): Promise<Category[]> => {
+  try {
+    // Fetch all categories from the database
+    const results = await db.select()
+      .from(categoriesTable)
+      .execute();
+
+    // Return the categories - no numeric conversions needed as no numeric columns
+    return results;
+  } catch (error) {
+    console.error('Get categories failed:', error);
+    throw error;
+  }
+};

@@ -1,7 +1,19 @@
+import { db } from '../db';
+import { budgetsTable } from '../db/schema';
+import { eq } from 'drizzle-orm';
+
 export async function deleteBudget(id: number): Promise<boolean> {
-    // This is a placeholder declaration! Real code should be implemented here.
-    // The goal of this handler is deleting a budget from the database.
-    // Allows users to remove budget constraints that are no longer needed.
-    // Returns true if deletion was successful, false otherwise.
-    return Promise.resolve(true);
+  try {
+    // Delete the budget with the specified ID
+    const result = await db.delete(budgetsTable)
+      .where(eq(budgetsTable.id, id))
+      .returning()
+      .execute();
+
+    // Return true if a budget was actually deleted
+    return result.length > 0;
+  } catch (error) {
+    console.error('Budget deletion failed:', error);
+    throw error;
+  }
 }

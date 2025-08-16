@@ -1,131 +1,151 @@
-:root {
-  --background: #fff;
-  --text: #000;
-  --text-secondary: #666;
-  --spinner-border: #000;
-  --spinner-border-top: transparent;
-  --dot-color: #000;
-  --grid-color: rgba(0,0,0,0.05);
-  --gradient-color: rgba(0,0,0,0.03);
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-      --background: #000;
-      --text: #fff;
-      --text-secondary: #888;
-      --spinner-border: #fff;
-      --spinner-border-top: transparent;
-      --dot-color: #fff;
-      --grid-color: rgba(255,255,255,0.05);
-      --gradient-color: rgba(255,255,255,0.03);
+@layer components {
+  /* Custom gradient backgrounds */
+  .gradient-bg-main {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  
+  .gradient-bg-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Custom card hover effects */
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Animation for loading states */
+  .pulse-slow {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Custom scrollbar for better UX */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.7);
+  }
+
+  /* Enhanced progress bar */
+  .progress-enhanced {
+    position: relative;
+    overflow: visible;
+  }
+  
+  .progress-enhanced::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Enhanced button states */
+  .btn-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Financial status indicators */
+  .status-positive {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  }
+  
+  .status-negative {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  }
+  
+  .status-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  }
+
+  /* Icon animations */
+  .icon-bounce {
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+      transform: translate3d(0,0,0);
+    }
+    40%, 43% {
+      transform: translate3d(0,-8px,0);
+    }
+    70% {
+      transform: translate3d(0,-4px,0);
+    }
+    90% {
+      transform: translate3d(0,-2px,0);
+    }
+  }
+
+  /* Enhanced glass morphism effect */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   }
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--background);
-  color: var(--text);
-  padding: 20px;
-  line-height: 1.5;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.container {
-  text-align: center;
-  max-width: 600px;
-}
-h1.title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  letter-spacing: -0.02em;
-}
-p.description {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-}
-.spinner {
-  width: 40px;
-  height: 40px;
-  margin: 2rem auto;
-  position: relative;
-}
-.spinner::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 2px solid var(--spinner-border);
-  border-top-color: var(--spinner-border-top);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-  margin-top: 2rem;
-}
-.dot {
-  width: 4px;
-  height: 4px;
-  background: var(--dot-color);
-  border-radius: 50%;
-  animation: fade 1.4s infinite ease-in-out;
-}
-.dot:nth-child(1) { animation-delay: -0.32s; }
-.dot:nth-child(2) { animation-delay: -0.16s; }
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-@keyframes fade {
-  0%, 80%, 100% { opacity: 0; }
-  40% { opacity: 1; }
-}
-.grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background-image: 
-      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-  background-size: 24px 24px;
-  transition: background-image 0.3s ease;
-}
-.gradient {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  background: radial-gradient(circle at center, var(--gradient-color) 0%, transparent 50%);
-  transition: background 0.3s ease;
+
+/* Global enhancements */
+@layer base {
+  body {
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 }
 
-.footer {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-.footer-link {
-  color: var(--text);
-  text-decoration: none;
-  font-weight: bold;
+/* Custom utility classes */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .border-gradient {
+    border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+  }
 }
